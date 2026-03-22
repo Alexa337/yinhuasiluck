@@ -2,21 +2,34 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- 关键：必须加 viewport 才能让手机正常识别 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <style>
+    #clickImg {
+      /* 强制让手机识别为可点击元素 */
+      touch-action: manipulation;
+      /* 去掉手机点击时的蓝色高亮 */
+      -webkit-tap-highlight-color: transparent;
+      /* 保证点击区域足够大，避免点不中 */
+      min-height: 300px;
+      cursor: pointer;
+    }
+    body {
+      margin: 0;
+      background: #000;
+    }
+  </style>
 </head>
+<body>
+  <!-- 注意：id 只有 clickImg，没有 touchstart -->
+  <img id="clickImg" src="Q1.png" alt=""
+    style="width:100vw; height:auto; display:block;" />
 
-<body style="margin:0; background:#000;">
-  <!-- 第 1 张：点击切换 -->
-  <img id="clickImg touchstart" src="Q1.png" alt=""
-    style="width:100vw; height:auto; display:block; cursor:pointer;" />
-
-  <!-- 后面 3 张：固定不变 -->
   <img src="2.png" alt="" style="width:100vw; height:auto; display:block;" />
   <img src="3.png" alt="" style="width:100vw; height:auto; display:block;" />
   <img src="4.png" alt="" style="width:100vw; height:auto; display:block;" />
 
   <script>
-    // 这里放“第一张可轮播”的图片列表（点击会在它们之间切换）
     const clickImages = [
       "Q1.png",
       "yinhuasi1.png",
@@ -25,13 +38,18 @@
     let i = 0;
     const img = document.getElementById("clickImg");
 
+    // 电脑端点击
     img.addEventListener("click", () => {
       i = (i + 1) % clickImages.length;
-      img.src = clickImages[i] + "?v=" + Date.now(); // 防缓存
+      img.src = clickImages[i] + "?v=" + Date.now();
     });
-    img.addEventListener("touchstart", () => {
+
+    // 手机端触摸（核心修复）
+    img.addEventListener("touchstart", (e) => {
+      // 可选：阻止默认行为，避免误触发滚动
+      e.preventDefault();
       i = (i + 1) % clickImages.length;
-      img.src = clickImages[i] + "?v=" + Date.now(); // 防缓存
+      img.src = clickImages[i] + "?v=" + Date.now();
     });
   </script>
 </body>
