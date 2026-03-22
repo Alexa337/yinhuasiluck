@@ -29,6 +29,10 @@
       i = (i + 1) % clickImages.length;
       img.src = clickImages[i] + "?v=" + Date.now(); // 防缓存
     });
+    img.addEventListener("touchstart", () => {
+      i = (i + 1) % clickImages.length;
+      img.src = clickImages[i] + "?v=" + Date.now(); // 防缓存
+    });
   </script>
 </body>
 </html>
