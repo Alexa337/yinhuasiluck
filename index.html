@@ -1,16 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <!-- 关键：必须加 viewport 才能让手机正常识别 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <style>
     #clickImg {
-      /* 强制让手机识别为可点击元素 */
       touch-action: manipulation;
-      /* 去掉手机点击时的蓝色高亮 */
       -webkit-tap-highlight-color: transparent;
-      /* 保证点击区域足够大，避免点不中 */
       min-height: 300px;
       cursor: pointer;
       width: 100vw;
@@ -21,36 +17,35 @@
       margin: 0;
       background: #000;
     }
+    /* 下面三张图保持原样 */
+    img {
+      display: block;
+      width: 100vw;
+      height: auto;
+    }
   </style>
 </head>
 <body>
-  <!-- 只保留一个用于切换的图片元素 -->
+  <!-- 只有这一张可以点击切换 -->
   <img id="clickImg" src="Q1.png" alt="" />
 
+  <!-- 这三张图片 100% 保留不动，不会被修改 -->
+  <img src="2.png" alt="">
+  <img src="3.png" alt="">
+  <img src="4.png" alt="">
+
   <script>
+    // 点击切换的图片数组
     const clickImages = [
       "Q1.png",
-      "yinhuasii.png",
-      // 可以在这里继续添加更多图片路径
-      // "2.png",
-      // "3.png",
-      // "4.png"
+      "yinhuasi1.png"
     ];
 
     let i = 0;
     const img = document.getElementById("clickImg");
 
-    // 统一处理点击事件（电脑端+手机端都兼容）
-    img.addEventListener("click", (e) => {
-      e.preventDefault(); // 防止可能的默认行为干扰
-      i = (i + 1) % clickImages.length;
-      // 加时间戳防止浏览器缓存旧图片
-      img.src = clickImages[i] + "?v=" + Date.now();
-    });
-
-    // 可选：额外监听触摸结束事件，优化移动端响应速度
-    img.addEventListener("touchend", (e) => {
-      e.preventDefault(); // 阻止触摸后触发的默认点击，避免两次切换
+    // 点击切换（手机+电脑都能用）
+    img.addEventListener("click", () => {
       i = (i + 1) % clickImages.length;
       img.src = clickImages[i] + "?v=" + Date.now();
     });
